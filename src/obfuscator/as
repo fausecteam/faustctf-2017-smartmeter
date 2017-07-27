@@ -1,0 +1,17 @@
+#!/bin/sh
+
+lastarg() {
+    shift $(($# - 1))
+    echo "$1"
+}
+
+#cp $(lastarg $@) $(mktemp)
+
+# instead of a ret, do a manual pop and jmp (clobbering a scratch register)
+sed -r -i -e 's/^\tjmpq?\t[*](.*)$/\tpush \1;\tretq/' $(lastarg $@) # TODO
+sed -r -i -e 's/^\t(rep )?ret$/\tpop %rsi;\tjmp *%rsi/' $(lastarg $@)
+# instead of a direct call, push return instruction pointer and destination address, then ret
+sed -r -i -e 's/^\tcall\t([^*].*)$/\tpush %rax;\tlea \1(%rip), %rax;\tpush %rax;\tlea 6(%rip), %rax;\txchg 8(%rsp),%rax;\tretq;\t#call\t\1/' $(lastarg $@)
+
+
+exec as $@

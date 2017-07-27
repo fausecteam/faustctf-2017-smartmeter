@@ -1,0 +1,34 @@
+# bjnfc build config
+# You can switch flavors using: kore flavor [newflavor]
+
+# Set to yes if you wish to produce a single binary instead
+# of a dynamic library. If you set this to yes you must also
+# set kore_source together with kore_flavor and update ldflags
+# to include the appropriate libraries you will be linking with.
+single_binary=yes
+kore_source=${KORE_HOME}/../kore/
+#kore_flavor=
+
+ldflags=-lssl -lcrypto -Wl,-Bstatic -lschnorr -Wl,-Bdynamic -lbsd -L${KORE_HOME}/lib/ -lpq -pthread
+# dbus stuff:
+ldflags=-lgmodule-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
+
+# The flags below are shared between flavors
+cflags=-Wall -Wmissing-declarations -Wshadow -std=gnu11
+cflags=-Wstrict-prototypes -Wmissing-prototypes
+cflags=-Wpointer-arith -Wcast-qual -Wsign-compare
+cflags=-I${KORE_HOME}/include -I/usr/include/gio-unix-2.0/
+cflags=-D_FORTIFY_SOURCE=0 -fno-stack-protector -fno-PIE
+# dbus stuff:
+cflags=-pthread -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/lib64/glib-2.0/include
+
+dev {
+	# These flags are added to the shared ones when
+	# you build the "dev" flavor.
+	cflags=-g -Og -DDEBUG_MODE
+}
+
+prod {
+	ldflags=-Wl,--gc-sections -Wl,-z,relro,-z,now -Wl,--no-export-dynamic -Wl,--dynamic-list=symbols_export_dynamic -Wl,--strip-all
+	cflags=-O3 -B${KORE_HOME}/../obfuscator/ -ffunction-sections -fdata-sections
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="?file=bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="?file=bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  </head>
+  <body>
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">Smartmeter</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="?file=index.html">Summary Usage <span class="sr-only">(current)</span></a></li>
+        <li><a href="?file=device_energy.html">Per-device Usage</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="?file=register.html">Registration</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+    <div class="jumbotron">
+      <div class="container">
+        <h1>FancyCo SmartMeter 3000</h1>
+        <p>Congratulations to buying the FancyCo SmartMeter 3000! You have used <span id=energy></span> kCal since this unit was installed. If you had used a treadmill for generating this electricity instead of buying it from the power company, you could have lost <span id=weight></span>!</p>
+      </div>
+    </div>
+
+
+
+    <script src="?file=jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script src="?file=bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+        function kWh_to_calories(val) {
+            return val * 859.8;
+        }
+        function calories_to_kg(val) {
+            return val / 9000;
+        }
+        function kg_to_human(val) {
+            let log = Math.round(Math.log10(val));
+            if (log == Number.POSITIVE_INFINITY)
+                return "no weight";
+            if (log < 0)
+                return "barely any weight";
+            switch (log) {
+                case 0:
+                    return "the weight of a soda bottle";
+                case 1:
+                    return "about the weight of a dog";
+                case 2:
+                    return "the weight of a normal human";
+                case 3:
+                    return "the weight of a small elephant";
+                case 4:
+                    return "the weight of a few elephants";
+                case 5:
+                    return "the weight of a blue whale";
+                default:
+                    return "quite a lot of weight";
+            }
+        }
+
+        fetch('../usage/total_energy')
+            .then(r => r.text())
+            .then(t => {
+                $("#energy").text(kWh_to_calories(parseFloat(t)));
+                $("#weight").text(kg_to_human(calories_to_kg(kWh_to_calories(parseFloat(t)))));
+            });
+    </script>
+  </body>
+</html>

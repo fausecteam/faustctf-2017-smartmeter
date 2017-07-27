@@ -1,0 +1,8 @@
+*~
+/src/root/
+/src/bjnfc/bjnfc-prod
+/src/bjnfc/bjnfc-dev
+/dpkg/*.deb
+*.pem
+*.so
+__pycache__

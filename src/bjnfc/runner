@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -x
+flavor=$(cat .flavor)
+
+"./bjnfc-$flavor" -fnr & # run app in background
+pid=$!
+
+# wait for file change
+inotifywait -q --format= -e modify,move,create "bjnfc-$flavor"
+kill $pid
+
+wait $pid # wait for app
+
+exec "$0" $@

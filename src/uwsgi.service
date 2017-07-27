@@ -1,0 +1,20 @@
+[Unit]
+Description=uWSGI
+After=syslog.target
+
+[Service]
+ExecStart=/etc/init.d/uwsgi start
+ExecStop=/etc/init.d/uwsgi stop
+ExecReload=/etc/init.d/uwsgi reload
+Restart=always
+KillSignal=SIGQUIT
+Type=forking
+PIDFile=/run/uwsgi/app/alexa/pid
+CPUAccounting=yes
+CPUQuota=10%
+MemoryAccounting=yes
+MemoryLimit=100M
+LimitNPROC=100
+
+[Install]
+WantedBy=multi-user.target

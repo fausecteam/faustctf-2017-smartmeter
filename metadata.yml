@@ -1,0 +1,20 @@
+name: smartmeter
+author:
+  - Malte <malte@faust.ninja>
+packages:
+  - build-essential
+  - libssl-dev/jessie-backports
+  - libpq-dev/jessie-backports
+  - openssl/jessie-backports
+  - libbsd-dev
+  - postgresql-contrib/jessie-backports
+  - libglib2.0-dev
+  - dbus
+  - linux-image-amd64/jessie-backports
+  - lsof
+#  - nasm
+checker:
+  module: smartmeter
+  class: SmartmeterChecker
+  packages:
+    - python3-requests

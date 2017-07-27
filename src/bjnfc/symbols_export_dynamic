@@ -1,0 +1,3 @@
+# A list of all function names exported as dynamic symbols.
+# Should only contain functions mentioned in the config file.
+{ serve_static; serve_index; total_energy; device_energy; get_data; register_user;  };

@@ -1,0 +1,9 @@
+*.o
+.flavor
+.objs
+bjnfc.so
+assets.h
+cert
+conf/build.conf
+src/systemd.h
+src/systemd.c
